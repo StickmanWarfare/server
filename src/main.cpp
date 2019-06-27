@@ -1,6 +1,7 @@
 #include "socket_stuff.h"
 #include "crypt_stuff.h"
 #include "standard_stuff.h"
+
 #include <string>
 #include <set>
 #include <map>
@@ -13,14 +14,12 @@
 #include <locale>
 #include <sstream>
 
-
 //FLAGEK
 //#define WHITELIST
-//#define NO_DB_UPDATE //TODO SVN
+//#define NO_DB_UPDATE
 
 #ifdef _WIN32
 #include <windows.h>
-
 
 #else
 //mi a fasznak van egyatalan SIGPIPE?! Az eszem megall.
@@ -101,6 +100,13 @@ int varFegyvTeam;					//egy csapatban lévõ fegyók száma
 
 	void reload()
 	{
+        olddatachecksums.clear();
+        csunyaszavak.clear();
+        viragnevek.clear();
+        adminok.clear();
+        medalok.clear();
+        warevents.clear();
+
 		ifstream fil(cfgsource.c_str());
 		string tmpstr;
 
@@ -152,8 +158,6 @@ int varFegyvTeam;					//egy csapatban lévõ fegyók száma
 		fil>>allowedchars;
 		fil>>lowercasechars;
 
-		
-
 		fil>>tmpstr; 
 		csunyaszavak=explode(tmpstr,",");
 
@@ -162,8 +166,6 @@ int varFegyvTeam;					//egy csapatban lévõ fegyók száma
 
 		fil>>tmpstr; 
 		medalok=explode(tmpstr,",");
-
-		warevents.clear();
 
 		while(fil>>tmpstr && tmpstr=="warevent")
 		{
