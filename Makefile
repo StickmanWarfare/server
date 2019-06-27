@@ -1,24 +1,32 @@
 CXX=g++
-RM=rm -f
+RM=rm -r -f
 CPPFLAGS=-O2 -Wall -Werror
-LDFLAGS=-O2 -Wall -Werror
 LDLIBS=-lrt
 
-SRCS=main.cpp crypt_stuff.cpp standard_stuff.cpp socket_stuff.cpp
-OBJS=$(subst .cpp,.o,$(SRCS))
+APP=stickserver
+OUTDIR=runtime
+SRCDIR=src
+OBJDIR=obj
+SRCS=$(shell find $(SRCDIR) -name "*.cpp")
+OBJS=$(addprefix $(OBJDIR)/,$(subst .cpp,.o, $(notdir $(SRCS))))
 
-all: stickszerver
+all: $(APP)
 
-stickszerver: $(OBJS)
-	$(CXX) $(LDFLAGS) -o stickszerver $(OBJS) $(LDLIBS)
+$(APP): $(OBJS)
+	-@mkdir -p $(OUTDIR)  
+	$(CXX) $(CPPFLAGS) -o $(addprefix $(OUTDIR)/,$(APP)) $(OBJS) $(LDLIBS)
+	
+$(OBJS): | $(OBJDIR)
 
-main.o: crypt_stuff.h standard_stuff.h socket_stuff.h
+$(OBJDIR):
+	-@mkdir -p $(OBJDIR)
+	
+$(OBJDIR)/%.o: $(SRCDIR)/%.cpp
+	$(CXX) $(CPPFLAGS) -c $< -o $@
 
-standard_stuff.o: standard_stuff.h
-
-socket_stuff.o: socket_stuff.h
-
-crypt_stuff.o: crypt_stuff.h
-
+run:
+	./$(OUTDIR)/$(APP)
+	
 clean:
-	$(RM) $(OBJS) stickszerver
+	-@$(RM) $(OBJDIR)
+	-@$(RM) $(OUTDIR)/$(APP)

@@ -1,0 +1,6 @@
+.idea
+out
+obj
+runtime/config.cfg
+runtime/stickserver
+CMakeLists.txt
