@@ -2315,6 +2315,7 @@ protected:
 		}
 		/* fél másodpercenként kérünk UDP-t ha nem jött még*/
 		if (sock.context.loggedin &&
+			!sock.context.gotudp &&
 			sock.context.lastudpquery<gtc-500)
 		{
 			SendUdpQuery(sock);
