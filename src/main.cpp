@@ -320,7 +320,7 @@ struct autoMessages{
 			fil.close();
 			cout << "loaded "<<msglist.size()<<" messages\n";
 		}
-		catch (exception e)
+		catch (exception& e)
 		{
 			cout<<"error reading "<<file<<": "<<e.what()<<"\n";
 		}
